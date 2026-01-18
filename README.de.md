@@ -56,3 +56,6 @@ Im Ordner frontend:
 - `npm run build`
 
 Das Bundle landet in custom_components/ha_artnet_led_uiconfig/frontend/dist/.
+
+---
+Dieses Projekt ist vollständig KI‑generiert.

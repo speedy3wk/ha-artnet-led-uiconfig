@@ -2,7 +2,7 @@
 
 Dieses Add-on schreibt die YAML‑Konfiguration aus dem UI‑Panel in eine Include‑Datei und triggert optional einen Reload.
 
-English: see README.md.
+English: see [README.md](README.md).
 
 ## Optionen
 - `ha_url`: URL der Home Assistant API
@@ -29,3 +29,6 @@ https://github.com/speedy3wk/ha-artnet-led-uiconfig
 
 ## API
 - `POST /apply` mit JSON `{ "yaml": "..." }`
+
+---
+Dieses Projekt ist vollständig KI‑generiert.

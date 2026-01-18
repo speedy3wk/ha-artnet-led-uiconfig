@@ -56,3 +56,6 @@ In frontend:
 - `npm run build`
 
 Bundle output: custom_components/ha_artnet_led_uiconfig/frontend/dist/.
+
+---
+This project is fully AI-generated.
