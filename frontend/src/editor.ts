@@ -1200,4 +1200,6 @@ export class ArtnetLedConfigCardEditor extends LitElement {
   `;
 }
 
-customElements.define("artnet-led-config-card-editor", ArtnetLedConfigCardEditor);
+if (!customElements.get("artnet-led-config-card-editor")) {
+  customElements.define("artnet-led-config-card-editor", ArtnetLedConfigCardEditor);
+}
