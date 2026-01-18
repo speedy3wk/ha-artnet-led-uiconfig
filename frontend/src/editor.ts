@@ -80,27 +80,166 @@ const channelSetupToArray = (value: ChannelSetup | undefined): Array<string | nu
     .filter(Boolean);
 };
 
-const CHANNEL_OPTIONS: Array<{ key: string; label: string; description: string }> = [
-  { key: "d", label: "d", description: "Dimmer (scaled)" },
-  { key: "c", label: "c", description: "Cool white (scaled)" },
-  { key: "C", label: "C", description: "Cool white (unscaled)" },
-  { key: "h", label: "h", description: "Warm white (scaled)" },
-  { key: "H", label: "H", description: "Warm white (unscaled)" },
-  { key: "t", label: "t", description: "Temperature (0 warm → 255 cold)" },
-  { key: "T", label: "T", description: "Temperature (255 warm → 0 cold)" },
-  { key: "r", label: "r", description: "Red (scaled)" },
-  { key: "R", label: "R", description: "Red (unscaled)" },
-  { key: "g", label: "g", description: "Green (scaled)" },
-  { key: "G", label: "G", description: "Green (unscaled)" },
-  { key: "b", label: "b", description: "Blue (scaled)" },
-  { key: "B", label: "B", description: "Blue (unscaled)" },
-  { key: "w", label: "w", description: "White (scaled)" },
-  { key: "W", label: "W", description: "White (unscaled)" },
-  { key: "u", label: "u", description: "Hue" },
-  { key: "U", label: "U", description: "Saturation" },
-  { key: "x", label: "x", description: "X value (XY color mode)" },
-  { key: "y", label: "y", description: "Y value (XY color mode)" }
+const CHANNEL_OPTIONS: Array<{ key: string; label: string; descKey: string }> = [
+  { key: "d", label: "d", descKey: "channelDimmer" },
+  { key: "c", label: "c", descKey: "channelCoolScaled" },
+  { key: "C", label: "C", descKey: "channelCoolUnscaled" },
+  { key: "h", label: "h", descKey: "channelWarmScaled" },
+  { key: "H", label: "H", descKey: "channelWarmUnscaled" },
+  { key: "t", label: "t", descKey: "channelTempScaled" },
+  { key: "T", label: "T", descKey: "channelTempUnscaled" },
+  { key: "r", label: "r", descKey: "channelRedScaled" },
+  { key: "R", label: "R", descKey: "channelRedUnscaled" },
+  { key: "g", label: "g", descKey: "channelGreenScaled" },
+  { key: "G", label: "G", descKey: "channelGreenUnscaled" },
+  { key: "b", label: "b", descKey: "channelBlueScaled" },
+  { key: "B", label: "B", descKey: "channelBlueUnscaled" },
+  { key: "w", label: "w", descKey: "channelWhiteScaled" },
+  { key: "W", label: "W", descKey: "channelWhiteUnscaled" },
+  { key: "u", label: "u", descKey: "channelHue" },
+  { key: "U", label: "U", descKey: "channelSaturation" },
+  { key: "x", label: "x", descKey: "channelX" },
+  { key: "y", label: "y", descKey: "channelY" }
 ];
+
+const EDITOR_TEXT = {
+  de: {
+    invalidYaml: "Ungültiges YAML",
+    addNode: "Node hinzufügen",
+    importYaml: "YAML importieren",
+    loadExample: "Beispiel laden",
+    clearAll: "Alles leeren",
+    noNodes: "Keine Nodes vorhanden. Nutze “Node hinzufügen”.",
+    yamlPreview: "YAML Vorschau",
+    yamlSubtitle:
+      "Kopiere diesen Block in deine configuration.yaml (HA erlaubt kein direktes Schreiben aus dem UI-Editor).",
+    copyYaml: "YAML kopieren",
+    nodeTitle: "Node",
+    remove: "Entfernen",
+    hostIp: "Host/IP",
+    nodeType: "Node Type",
+    maxFps: "Max FPS",
+    refresh: "Refresh (s)",
+    universes: "Universes",
+    addUniverse: "Universe hinzufügen",
+    universeTitle: "Universe",
+    addLamp: "Lampe hinzufügen",
+    universeId: "Universe ID",
+    outputCorrection: "Output Correction",
+    noUniverses: "Noch keine Universes.",
+    noLamps: "Keine Lampen in diesem Universe.",
+    yamlImportTitle: "YAML importieren",
+    yamlImportSubtitle: "Füge deine artnet_led Konfiguration ein.",
+    close: "Schließen",
+    importAction: "Importieren",
+    cancel: "Abbrechen",
+    editLamp: "Lampe bearbeiten",
+    name: "Name",
+    channel: "Channel",
+    type: "Type",
+    transition: "Transition",
+    channelSize: "Channel Size",
+    channelSetup: "Channel Setup",
+    minTemp: "Min Temp",
+    maxTemp: "Max Temp",
+    channelSetupEditor: "Channel Setup Editor",
+    save: "Speichern",
+    channelEditorTitle: "Channel Setup Editor",
+    channelEditorSubtitle: "Baue die DMX‑Kanäle per Drag & Drop.",
+    paletteTitle: "Bausteine",
+    staticValue: "Statischer Wert (0‑255)",
+    channelOrder: "Channel Reihenfolge",
+    noChannels: "Noch keine Kanäle.",
+    apply: "Übernehmen",
+    channelDimmer: "Dimmer (skaliert)",
+    channelCoolScaled: "Kaltweiß (skaliert)",
+    channelCoolUnscaled: "Kaltweiß (unskaliert)",
+    channelWarmScaled: "Warmweiß (skaliert)",
+    channelWarmUnscaled: "Warmweiß (unskaliert)",
+    channelTempScaled: "Temperatur (0 warm → 255 kalt)",
+    channelTempUnscaled: "Temperatur (255 warm → 0 kalt)",
+    channelRedScaled: "Rot (skaliert)",
+    channelRedUnscaled: "Rot (unskaliert)",
+    channelGreenScaled: "Grün (skaliert)",
+    channelGreenUnscaled: "Grün (unskaliert)",
+    channelBlueScaled: "Blau (skaliert)",
+    channelBlueUnscaled: "Blau (unskaliert)",
+    channelWhiteScaled: "Weiß (skaliert)",
+    channelWhiteUnscaled: "Weiß (unskaliert)",
+    channelHue: "Farbton",
+    channelSaturation: "Sättigung",
+    channelX: "X‑Wert (XY‑Modus)",
+    channelY: "Y‑Wert (XY‑Modus)"
+  },
+  en: {
+    invalidYaml: "Invalid YAML",
+    addNode: "Add node",
+    importYaml: "Import YAML",
+    loadExample: "Load example",
+    clearAll: "Clear all",
+    noNodes: "No nodes yet. Use “Add node”.",
+    yamlPreview: "YAML preview",
+    yamlSubtitle:
+      "Copy this block into your configuration.yaml (HA does not allow direct writes from the UI editor).",
+    copyYaml: "Copy YAML",
+    nodeTitle: "Node",
+    remove: "Remove",
+    hostIp: "Host/IP",
+    nodeType: "Node type",
+    maxFps: "Max FPS",
+    refresh: "Refresh (s)",
+    universes: "Universes",
+    addUniverse: "Add universe",
+    universeTitle: "Universe",
+    addLamp: "Add lamp",
+    universeId: "Universe ID",
+    outputCorrection: "Output correction",
+    noUniverses: "No universes yet.",
+    noLamps: "No lamps in this universe.",
+    yamlImportTitle: "Import YAML",
+    yamlImportSubtitle: "Paste your artnet_led configuration.",
+    close: "Close",
+    importAction: "Import",
+    cancel: "Cancel",
+    editLamp: "Edit lamp",
+    name: "Name",
+    channel: "Channel",
+    type: "Type",
+    transition: "Transition",
+    channelSize: "Channel size",
+    channelSetup: "Channel setup",
+    minTemp: "Min temp",
+    maxTemp: "Max temp",
+    channelSetupEditor: "Channel setup editor",
+    save: "Save",
+    channelEditorTitle: "Channel setup editor",
+    channelEditorSubtitle: "Build DMX channels by drag & drop.",
+    paletteTitle: "Blocks",
+    staticValue: "Static value (0‑255)",
+    channelOrder: "Channel order",
+    noChannels: "No channels yet.",
+    apply: "Apply",
+    channelDimmer: "Dimmer (scaled)",
+    channelCoolScaled: "Cool white (scaled)",
+    channelCoolUnscaled: "Cool white (unscaled)",
+    channelWarmScaled: "Warm white (scaled)",
+    channelWarmUnscaled: "Warm white (unscaled)",
+    channelTempScaled: "Temperature (0 warm → 255 cold)",
+    channelTempUnscaled: "Temperature (255 warm → 0 cold)",
+    channelRedScaled: "Red (scaled)",
+    channelRedUnscaled: "Red (unscaled)",
+    channelGreenScaled: "Green (scaled)",
+    channelGreenUnscaled: "Green (unscaled)",
+    channelBlueScaled: "Blue (scaled)",
+    channelBlueUnscaled: "Blue (unscaled)",
+    channelWhiteScaled: "White (scaled)",
+    channelWhiteUnscaled: "White (unscaled)",
+    channelHue: "Hue",
+    channelSaturation: "Saturation",
+    channelX: "X value (XY mode)",
+    channelY: "Y value (XY mode)"
+  }
+} as const;
 
 export class ArtnetLedConfigCardEditor extends LitElement {
   @property({ attribute: false }) public hass?: unknown;
@@ -117,6 +256,15 @@ export class ArtnetLedConfigCardEditor extends LitElement {
   @state() private _showChannelEditor = false;
   @state() private _channelDraft: Array<string | number> = [];
   @state() private _channelDragIndex?: number;
+
+  private _lang() {
+    const lang = (this.hass as any)?.language ?? navigator.language ?? "en";
+    return lang.toLowerCase().startsWith("de") ? "de" : "en";
+  }
+
+  private _t(key: keyof typeof EDITOR_TEXT.en) {
+    return EDITOR_TEXT[this._lang()][key];
+  }
 
   protected updated(changedProps: Map<string, unknown>) {
     if (changedProps.has("config") && this.config) {
@@ -366,7 +514,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
       this._updateConfig({ ...next, title: this._config.title ?? "" });
       this._showImport = false;
     } catch (error) {
-      this._importError = error instanceof Error ? error.message : "Ungültiges YAML";
+      this._importError = error instanceof Error ? error.message : this._t("invalidYaml");
     }
   }
 
@@ -402,15 +550,15 @@ export class ArtnetLedConfigCardEditor extends LitElement {
       <section class="editor">
         <div class="toolbar${this.compact ? " compact" : ""}">
           <div class="buttons">
-            <button class="primary" @click=${this._addNode}>Node hinzufügen</button>
-            <button @click=${this._openImport}>YAML importieren</button>
-            <button @click=${this._loadExample}>Beispiel laden</button>
-            <button @click=${this._clearAll}>Alles leeren</button>
+            <button class="primary" @click=${this._addNode}>${this._t("addNode")}</button>
+            <button @click=${this._openImport}>${this._t("importYaml")}</button>
+            <button @click=${this._loadExample}>${this._t("loadExample")}</button>
+            <button @click=${this._clearAll}>${this._t("clearAll")}</button>
           </div>
         </div>
 
         ${this._config.nodes.length === 0
-          ? html`<div class="empty">Keine Nodes vorhanden. Nutze “Node hinzufügen”.</div>`
+          ? html`<div class="empty">${this._t("noNodes")}</div>`
           : this._config.nodes.map((node, nodeIndex) => this.renderNode(node, nodeIndex))}
 
         ${this.hideYaml
@@ -419,13 +567,12 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               <section class="yaml">
                 <div class="yaml-header">
                   <div>
-                    <div class="yaml-title">YAML Vorschau</div>
+                    <div class="yaml-title">${this._t("yamlPreview")}</div>
                     <div class="yaml-subtitle">
-                      Kopiere diesen Block in deine configuration.yaml (HA erlaubt kein direktes
-                      Schreiben aus dem UI-Editor).
+                      ${this._t("yamlSubtitle")}
                     </div>
                   </div>
-                  <button @click=${this._copyYaml}>YAML kopieren</button>
+                  <button @click=${this._copyYaml}>${this._t("copyYaml")}</button>
                 </div>
                 <pre>${toArtnetYaml(this._config)}</pre>
               </section>
@@ -442,12 +589,14 @@ export class ArtnetLedConfigCardEditor extends LitElement {
     return html`
       <section class="node">
         <div class="node-header">
-          <div class="node-title">Node ${nodeIndex + 1}</div>
-          <button class="danger" @click=${() => this._removeNode(nodeIndex)}>Entfernen</button>
+          <div class="node-title">${this._t("nodeTitle")} ${nodeIndex + 1}</div>
+          <button class="danger" @click=${() => this._removeNode(nodeIndex)}>
+            ${this._t("remove")}
+          </button>
         </div>
         <div class="node-fields">
           <label>
-            Host/IP
+            ${this._t("hostIp")}
             <input
               type="text"
               .value=${node.host}
@@ -457,7 +606,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
             />
           </label>
           <label>
-            Node Type
+            ${this._t("nodeType")}
             <select
               .value=${node.node_type ?? "artnet-direct"}
               @change=${(event: Event) =>
@@ -470,7 +619,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
             </select>
           </label>
           <label>
-            Max FPS
+            ${this._t("maxFps")}
             <input
               type="number"
               .value=${String(node.max_fps ?? 25)}
@@ -479,7 +628,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
             />
           </label>
           <label>
-            Refresh (s)
+            ${this._t("refresh")}
             <input
               type="number"
               .value=${String(node.refresh_every ?? 0)}
@@ -495,11 +644,11 @@ export class ArtnetLedConfigCardEditor extends LitElement {
 
         <div class="universes">
           <div class="universe-header">
-            <div>Universes</div>
-            <button @click=${() => this._addUniverse(nodeIndex)}>Universe hinzufügen</button>
+            <div>${this._t("universes")}</div>
+            <button @click=${() => this._addUniverse(nodeIndex)}>${this._t("addUniverse")}</button>
           </div>
           ${node.universes.length === 0
-            ? html`<div class="empty">Noch keine Universes.</div>`
+            ? html`<div class="empty">${this._t("noUniverses")}</div>`
             : node.universes.map((universe, universeIndex) =>
                 this.renderUniverse(universe, nodeIndex, universeIndex)
               )}
@@ -512,17 +661,19 @@ export class ArtnetLedConfigCardEditor extends LitElement {
     return html`
       <div class="universe">
         <div class="universe-title">
-          <div>Universe ${universe.id}</div>
+          <div>${this._t("universeTitle")} ${universe.id}</div>
           <div class="universe-actions">
-            <button @click=${() => this._addDevice(nodeIndex, universeIndex)}>Lampe hinzufügen</button>
+            <button @click=${() => this._addDevice(nodeIndex, universeIndex)}>
+              ${this._t("addLamp")}
+            </button>
             <button class="danger" @click=${() => this._removeUniverse(nodeIndex, universeIndex)}>
-              Entfernen
+              ${this._t("remove")}
             </button>
           </div>
         </div>
         <div class="universe-fields">
           <label>
-            Universe ID
+            ${this._t("universeId")}
             <input
               type="number"
               .value=${String(universe.id)}
@@ -536,7 +687,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
             />
           </label>
           <label>
-            Output Correction
+            ${this._t("outputCorrection")}
             <select
               .value=${universe.output_correction ?? ""}
               @change=${(event: Event) =>
@@ -557,7 +708,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
         </div>
         <div class="devices">
           ${universe.devices.length === 0
-            ? html`<div class="empty">Keine Lampen in diesem Universe.</div>`
+            ? html`<div class="empty">${this._t("noLamps")}</div>`
             : universe.devices.map((device, deviceIndex) =>
                 this.renderDevice(device, nodeIndex, universeIndex, deviceIndex)
               )}
@@ -601,10 +752,10 @@ export class ArtnetLedConfigCardEditor extends LitElement {
         <div class="modal" @click=${(event: Event) => event.stopPropagation()}>
           <div class="modal-header">
             <div>
-              <div class="modal-title">YAML importieren</div>
-              <div class="modal-subtitle">Füge deine artnet_led Konfiguration ein.</div>
+              <div class="modal-title">${this._t("yamlImportTitle")}</div>
+              <div class="modal-subtitle">${this._t("yamlImportSubtitle")}</div>
             </div>
-            <button class="danger" @click=${this._closeImport}>Schließen</button>
+            <button class="danger" @click=${this._closeImport}>${this._t("close")}</button>
           </div>
           <textarea
             class="yaml-input"
@@ -614,8 +765,8 @@ export class ArtnetLedConfigCardEditor extends LitElement {
           ></textarea>
           ${this._importError ? html`<div class="error">${this._importError}</div>` : null}
           <div class="modal-actions">
-            <button class="primary" @click=${this._applyImport}>Importieren</button>
-            <button @click=${this._closeImport}>Abbrechen</button>
+            <button class="primary" @click=${this._applyImport}>${this._t("importAction")}</button>
+            <button @click=${this._closeImport}>${this._t("cancel")}</button>
           </div>
         </div>
       </div>
@@ -629,14 +780,14 @@ export class ArtnetLedConfigCardEditor extends LitElement {
         <div class="modal" @click=${(event: Event) => event.stopPropagation()}>
           <div class="modal-header">
             <div>
-              <div class="modal-title">Lampe bearbeiten</div>
-              <div class="modal-subtitle">Universe ${state.universeIndex + 1}</div>
+              <div class="modal-title">${this._t("editLamp")}</div>
+              <div class="modal-subtitle">${this._t("universeTitle")} ${state.universeIndex + 1}</div>
             </div>
-            <button class="danger" @click=${this._closeDeviceEditor}>Schließen</button>
+            <button class="danger" @click=${this._closeDeviceEditor}>${this._t("close")}</button>
           </div>
           <div class="modal-grid">
             <label>
-              Name
+              ${this._t("name")}
               <input
                 type="text"
                 .value=${device.name}
@@ -645,7 +796,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               />
             </label>
             <label>
-              Channel
+              ${this._t("channel")}
               <input
                 type="number"
                 .value=${String(device.channel)}
@@ -654,7 +805,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               />
             </label>
             <label>
-              Type
+              ${this._t("type")}
               <select
                 .value=${device.type ?? "dimmer"}
                 @change=${(event: Event) =>
@@ -670,7 +821,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               </select>
             </label>
             <label>
-              Transition
+              ${this._t("transition")}
               <input
                 type="number"
                 .value=${String(device.transition ?? 0)}
@@ -679,7 +830,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               />
             </label>
             <label>
-              Output Correction
+              ${this._t("outputCorrection")}
               <select
                 .value=${device.output_correction ?? ""}
                 @change=${(event: Event) =>
@@ -696,7 +847,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               </select>
             </label>
             <label>
-              Channel Size
+              ${this._t("channelSize")}
               <select
                 .value=${device.channel_size ?? ""}
                 @change=${(event: Event) =>
@@ -710,7 +861,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               </select>
             </label>
             <label>
-              Channel Setup
+              ${this._t("channelSetup")}
               <input
                 type="text"
                 .value=${Array.isArray(device.channel_setup)
@@ -718,11 +869,11 @@ export class ArtnetLedConfigCardEditor extends LitElement {
                   : device.channel_setup ?? ""}
                 @input=${(event: Event) =>
                   this._updateDeviceField("channel_setup", (event.target as HTMLInputElement).value)}
-                placeholder="rbgw oder 255"
+                placeholder=${this._lang() === "de" ? "rbgw oder 255" : "rgbw or 255"}
               />
             </label>
             <label>
-              Min Temp
+              ${this._t("minTemp")}
               <input
                 type="text"
                 .value=${device.min_temp ?? ""}
@@ -732,7 +883,7 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               />
             </label>
             <label>
-              Max Temp
+              ${this._t("maxTemp")}
               <input
                 type="text"
                 .value=${device.max_temp ?? ""}
@@ -743,10 +894,12 @@ export class ArtnetLedConfigCardEditor extends LitElement {
             </label>
           </div>
           <div class="modal-actions">
-            <button class="ghost" @click=${this._openChannelEditor}>Channel Setup Editor</button>
+            <button class="ghost" @click=${this._openChannelEditor}>
+              ${this._t("channelSetupEditor")}
+            </button>
             <div class="modal-actions-right">
-              <button class="primary" @click=${this._saveDeviceEditor}>Speichern</button>
-              <button @click=${this._closeDeviceEditor}>Abbrechen</button>
+              <button class="primary" @click=${this._saveDeviceEditor}>${this._t("save")}</button>
+              <button @click=${this._closeDeviceEditor}>${this._t("cancel")}</button>
             </div>
           </div>
         </div>
@@ -763,31 +916,33 @@ export class ArtnetLedConfigCardEditor extends LitElement {
         <div class="modal channel-editor" @click=${(event: Event) => event.stopPropagation()}>
           <div class="modal-header">
             <div>
-              <div class="modal-title">Channel Setup Editor</div>
-              <div class="modal-subtitle">Baue die DMX‑Kanäle per Drag & Drop.</div>
+              <div class="modal-title">${this._t("channelEditorTitle")}</div>
+              <div class="modal-subtitle">${this._t("channelEditorSubtitle")}</div>
             </div>
-            <button class="danger" @click=${this._closeChannelEditor}>Schließen</button>
+            <button class="danger" @click=${this._closeChannelEditor}>${this._t("close")}</button>
           </div>
           <div class="channel-editor-body">
             <div class="channel-palette">
-              <div class="palette-title">Bausteine</div>
+              <div class="palette-title">${this._t("paletteTitle")}</div>
               <div class="palette-grid">
                 ${CHANNEL_OPTIONS.map(
                   (option) => html`
                     <button
                       class="palette-item"
                       @click=${() => this._addChannelToken(option.key)}
-                      title=${option.description}
+                      title=${this._t(option.descKey as keyof typeof EDITOR_TEXT.en)}
                     >
                       <span class="palette-key">${option.label}</span>
-                      <span class="palette-desc">${option.description}</span>
+                      <span class="palette-desc">
+                        ${this._t(option.descKey as keyof typeof EDITOR_TEXT.en)}
+                      </span>
                     </button>
                   `
                 )}
               </div>
               <div class="palette-static">
                 <label>
-                  Statischer Wert (0‑255)
+                  ${this._t("staticValue")}
                   <input
                     type="number"
                     min="0"
@@ -800,9 +955,9 @@ export class ArtnetLedConfigCardEditor extends LitElement {
               </div>
             </div>
             <div class="channel-sequence" @dragover=${this._onChannelDragOver}>
-              <div class="sequence-title">Channel Reihenfolge</div>
+              <div class="sequence-title">${this._t("channelOrder")}</div>
               ${this._channelDraft.length === 0
-                ? html`<div class="empty">Noch keine Kanäle.</div>`
+                ? html`<div class="empty">${this._t("noChannels")}</div>`
                 : this._channelDraft.map(
                     (token, index) => html`
                       <div
@@ -819,8 +974,8 @@ export class ArtnetLedConfigCardEditor extends LitElement {
             </div>
           </div>
           <div class="modal-actions">
-            <button class="primary" @click=${this._saveChannelEditor}>Übernehmen</button>
-            <button @click=${this._closeChannelEditor}>Abbrechen</button>
+            <button class="primary" @click=${this._saveChannelEditor}>${this._t("apply")}</button>
+            <button @click=${this._closeChannelEditor}>${this._t("cancel")}</button>
           </div>
         </div>
       </div>

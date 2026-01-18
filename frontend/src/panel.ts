@@ -9,11 +9,85 @@ const WS_SAVE = "ha_artnet_led_uiconfig/save";
 const WS_DEPLOY = "ha_artnet_led_uiconfig/deploy";
 const PANEL_VERSION = "0.1.0";
 
+const PANEL_TEXT = {
+  de: {
+    ready: "Bereit",
+    loading: "Lade...",
+    loaded: "Geladen",
+    loadError: "Fehler beim Laden",
+    saving: "Speichere...",
+    saved: "Gespeichert",
+    saveError: "Fehler beim Speichern",
+    deployRunning: "Deploy läuft...",
+    deployFailed: "Deploy fehlgeschlagen",
+    deployWithError: "Deploy mit Fehler",
+    deployOk: "Deploy OK",
+    reloadFailed: "Reload fehlgeschlagen",
+    reloadLabel: "Reload",
+    haUrlLabel: "HA URL",
+    tokenLabel: "Token",
+    tokenPresent: "Token present",
+    tokenLength: "Token length",
+    statusLabel: "Status",
+    urlLabel: "URL",
+    title: "Art-Net LED UI Config",
+    reloadButton: "Neu laden",
+    showYaml: "YAML anzeigen",
+    hideYaml: "YAML ausblenden",
+    deploy: "Deploy",
+    deployEllipsis: "Deploy...",
+    save: "Speichern",
+    saveEllipsis: "Speichern..."
+  },
+  en: {
+    ready: "Ready",
+    loading: "Loading...",
+    loaded: "Loaded",
+    loadError: "Failed to load",
+    saving: "Saving...",
+    saved: "Saved",
+    saveError: "Failed to save",
+    deployRunning: "Deploy running...",
+    deployFailed: "Deploy failed",
+    deployWithError: "Deploy with errors",
+    deployOk: "Deploy OK",
+    reloadFailed: "Reload failed",
+    reloadLabel: "Reload",
+    haUrlLabel: "HA URL",
+    tokenLabel: "Token",
+    tokenPresent: "Token present",
+    tokenLength: "Token length",
+    statusLabel: "Status",
+    urlLabel: "URL",
+    title: "Art-Net LED UI Config",
+    reloadButton: "Reload",
+    showYaml: "Show YAML",
+    hideYaml: "Hide YAML",
+    deploy: "Deploy",
+    deployEllipsis: "Deploy...",
+    save: "Save",
+    saveEllipsis: "Saving..."
+  }
+} as const;
+
 export class HaArtnetLedUiConfigPanel extends LitElement {
   @property({ attribute: false }) public hass?: any;
 
   @state() private _config: ArtnetLedCardConfig = { ...EMPTY_CONFIG };
   @state() private _status = "Bereit";
+    public constructor() {
+      super();
+      this._status = this._t("ready");
+    }
+
+    private _lang() {
+      const lang = (this.hass as any)?.language ?? navigator.language ?? "en";
+      return lang.toLowerCase().startsWith("de") ? "de" : "en";
+    }
+
+    private _t(key: keyof typeof PANEL_TEXT.en) {
+      return PANEL_TEXT[this._lang()][key];
+    }
   @state() private _saving = false;
   @state() private _showYaml = false;
   @state() private _deploying = false;
@@ -34,7 +108,7 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
   }
 
   private async _loadConfig() {
-    this._status = "Lade...";
+    this._status = this._t("loading");
     try {
       const data = await this.hass.callWS({ type: WS_GET });
       this._config = { ...EMPTY_CONFIG, ...data, type: EMPTY_CONFIG.type };
@@ -43,9 +117,9 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
       this._lastDeployed = snapshot;
       this._saveDirty = false;
       this._deployDirty = false;
-      this._status = "Geladen";
+      this._status = this._t("loaded");
     } catch (error) {
-      this._status = "Fehler beim Laden";
+      this._status = this._t("loadError");
     }
   }
 
@@ -66,7 +140,7 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
       window.clearTimeout(this._saveTimeout);
     }
     this._saving = true;
-    this._status = "Speichere...";
+    this._status = this._t("saving");
     this._saveTimeout = window.setTimeout(() => void this._saveConfig(), 700);
   }
 
@@ -75,9 +149,9 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
       await this.hass.callWS({ type: WS_SAVE, config: this._config });
       this._lastSaved = JSON.stringify(this._config);
       this._saveDirty = false;
-      this._status = "Gespeichert";
+      this._status = this._t("saved");
     } catch (error) {
-      this._status = "Fehler beim Speichern";
+      this._status = this._t("saveError");
     }
     this._saving = false;
   }
@@ -95,7 +169,7 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
 
   private async _deployToAddon() {
     this._deploying = true;
-    this._status = "Deploy läuft...";
+    this._status = this._t("deployRunning");
     this._deployDetail = undefined;
     const yaml = toArtnetYaml(this._config);
     try {
@@ -105,39 +179,41 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
           result.error?.message ||
           result.error?.error ||
           (typeof result.error === "string" ? result.error : JSON.stringify(result.error));
-        const status = result.status ? `Status ${result.status}` : undefined;
-        const url = result.url ? `URL: ${result.url}` : undefined;
+        const status = result.status ? `${this._t("statusLabel")} ${result.status}` : undefined;
+        const url = result.url ? `${this._t("urlLabel")}: ${result.url}` : undefined;
         this._deployDetail = [message, status, url].filter(Boolean).join(" · ");
-        this._status = "Deploy fehlgeschlagen";
+        this._status = this._t("deployFailed");
         this._deploying = false;
         return;
       }
       if (result?.reload === "failed") {
-        const details = [result?.error ?? "Reload fehlgeschlagen"];
+        const details = [result?.error ?? this._t("reloadFailed")];
         if (result?.ha_url) {
-          details.push(`HA URL: ${result.ha_url}`);
+          details.push(`${this._t("haUrlLabel")}: ${result.ha_url}`);
         }
         if (result?.token_source) {
-          details.push(`Token: ${result.token_source}`);
+          details.push(`${this._t("tokenLabel")}: ${result.token_source}`);
         }
         if (typeof result?.token_present === "boolean") {
-          details.push(`Token present: ${result.token_present}`);
+          details.push(`${this._t("tokenPresent")}: ${result.token_present}`);
         }
         if (typeof result?.token_length === "number") {
-          details.push(`Token length: ${result.token_length}`);
+          details.push(`${this._t("tokenLength")}: ${result.token_length}`);
         }
         this._deployDetail = details.filter(Boolean).join(" · ");
-        this._status = "Deploy mit Fehler";
+        this._status = this._t("deployWithError");
       } else {
-        this._deployDetail = result?.reload ? `Reload: ${result.reload}` : undefined;
-        this._status = "Deploy OK";
+        this._deployDetail = result?.reload
+          ? `${this._t("reloadLabel")}: ${result.reload}`
+          : undefined;
+        this._status = this._t("deployOk");
       }
       if (result?.status === "written" || result?.status === undefined) {
         this._lastDeployed = JSON.stringify(this._config);
         this._deployDirty = false;
       }
     } catch (error) {
-      this._status = "Deploy fehlgeschlagen";
+      this._status = this._t("deployFailed");
       const anyError = error as any;
       this._deployDetail =
         anyError?.message || anyError?.error || anyError?.body?.message || JSON.stringify(error);
@@ -150,29 +226,29 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
       <section class="panel">
         <header class="header">
           <div>
-            <div class="title">Art-Net LED UI Config</div>
+            <div class="title">${this._t("title")}</div>
             <div class="subtitle">${this._status}</div>
             <div class="version">${PANEL_VERSION}</div>
             ${this._deployDetail ? html`<div class="detail">${this._deployDetail}</div>` : null}
           </div>
           <div class="actions">
-            <button @click=${() => void this._loadConfig()}>Neu laden</button>
+            <button @click=${() => void this._loadConfig()}>${this._t("reloadButton")}</button>
             <button @click=${this._toggleYaml}>
-              ${this._showYaml ? "YAML ausblenden" : "YAML anzeigen"}
+              ${this._showYaml ? this._t("hideYaml") : this._t("showYaml")}
             </button>
             <button
               class=${this._deployDirty ? "primary" : ""}
               ?disabled=${this._deploying}
               @click=${this._deployToAddon}
             >
-              ${this._deploying ? "Deploy..." : "Deploy"}
+              ${this._deploying ? this._t("deployEllipsis") : this._t("deploy")}
             </button>
             <button
               class=${this._saveDirty ? "primary" : ""}
               ?disabled=${this._saving}
               @click=${this._manualSave}
             >
-              ${this._saving ? "Speichern..." : "Speichern"}
+              ${this._saving ? this._t("saveEllipsis") : this._t("save")}
             </button>
           </div>
         </header>

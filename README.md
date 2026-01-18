@@ -1,45 +1,58 @@
 # Art-Net LED UI Config
 
-Custom Integration (nicht offiziell in HACS gelistet) für eine WYSIWYG Konfiguration der ha-artnet-led Einstellungen. Die Integration stellt ein Panel bereit und speichert die Konfiguration in Home Assistant Storage.
+Custom integration (not listed in official HACS) for a WYSIWYG configuration of ha-artnet-led. The integration provides a sidebar panel and stores the configuration in Home Assistant storage.
+
+Deutsch: see [README.de.md](README.de.md).
 
 ## Installation (HACS Custom Repository)
-1. HACS öffnen → Integrationen → ⋮ → Custom repositories.
-2. Repository URL hinzufügen: https://github.com/speedy3wk/ha-artnet-led-uiconfig (Kategorie: Integration).
-3. Integration installieren und Home Assistant neu starten.
-4. In Einstellungen → Geräte & Dienste die Integration hinzufügen.
+1. Open HACS → Integrations → ⋮ → Custom repositories.
+2. Add repository URL: https://github.com/speedy3wk/ha-artnet-led-uiconfig (Category: Integration).
+3. Install the integration and restart Home Assistant.
+4. Add the integration in Settings → Devices & Services.
 
 ## Panel
-Nach der Installation erscheint ein Sidebar-Panel **Art-Net LED Config**.
+After installation a sidebar panel **Art-Net LED Config** appears.
 
-## Automatisches Schreiben (Add-on)
-Dieses Repository enthält ein Add-on unter addons/ha_artnet_led_uiconfig.
-Damit kann das Panel die YAML automatisch in /config schreiben und optional `light.reload` auslösen.
+## Automatic YAML write (Add-on, optional)
+This repository includes an add-on under addons/ha_artnet_led_uiconfig. The add-on writes YAML to /config and triggers a reload.
 
-Schritte:
-1. Add-on Store → ⋮ → Repositories → https://github.com/speedy3wk/ha-artnet-led-uiconfig hinzufügen.
-2. Add-on installieren.
-3. In den Add-on Optionen `ha_token` setzen (nur nötig, wenn kein Supervisor-Token verfügbar ist).
-4. Im Panel auf **Deploy** klicken.
+Steps:
+1. Add-on Store → ⋮ → Repositories → add https://github.com/speedy3wk/ha-artnet-led-uiconfig.
+2. Install the add-on.
+3. Start the add-on.
+4. In the panel click **Deploy**.
 
-Der Deploy schreibt die YAML in die Include-Datei (Standard: /config/ha_artnet_led_uiconfig.yaml) und ergänzt configuration.yaml einmalig mit `light: !include ...`.
+### Add-on defaults (HAOS / Supervisor)
+No configuration is required:
+- `ha_url`: http://supervisor/core/api
+- `ha_token`: empty (Supervisor token is provided automatically)
 
-## Installations-Checkliste
-- Integration (custom_components) installiert und HA neu gestartet
-- Integration in **Einstellungen → Geräte & Dienste** hinzugefügt
-- Add-on installiert und gestartet
-- Add-on Optionen: `ha_token` gesetzt (Long-Lived Token)
-- Panel sichtbar: **Art-Net LED Config** in der Sidebar
+### If Supervisor token is not available
+Use a Long‑Lived Access Token:
+- `ha_url`: http://homeassistant:8123
+- `ha_token`: Long‑Lived Access Token
 
-## Deploy-Test
-1. Panel öffnen und Änderungen vornehmen.
-2. **Deploy** drücken.
-3. Prüfen, ob `/config/ha_artnet_led_uiconfig.yaml` geschrieben wurde.
-4. Prüfen, ob `configuration.yaml` die Zeile `light: !include ha_artnet_led_uiconfig.yaml` enthält.
-5. In **Einstellungen → System → Protokoll** nach Reload/Fehlern schauen.
+How to create a Long‑Lived Access Token:
+User Profile → Long‑Lived Access Tokens → Create Token.
 
-## Entwicklung Frontend
-Im Ordner frontend:
+The deploy writes `/config/ha_artnet_led_uiconfig.yaml` and adds `light: !include ha_artnet_led_uiconfig.yaml` to configuration.yaml once.
+
+## Installation checklist
+- Integration installed and Home Assistant restarted
+- Integration added in Settings → Devices & Services
+- Add-on installed and started (optional)
+- Panel visible: **Art-Net LED Config** in the sidebar
+
+## Deploy test
+1. Open the panel and edit the configuration.
+2. Press **Deploy**.
+3. Verify `/config/ha_artnet_led_uiconfig.yaml` was written.
+4. Verify configuration.yaml contains `light: !include ha_artnet_led_uiconfig.yaml`.
+5. Check Settings → System → Logs for reload errors.
+
+## Frontend development
+In frontend:
 - `npm install`
 - `npm run build`
 
-Das Bundle landet in custom_components/ha_artnet_led_uiconfig/frontend/dist/.
+Bundle output: custom_components/ha_artnet_led_uiconfig/frontend/dist/.
