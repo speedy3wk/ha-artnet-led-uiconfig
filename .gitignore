@@ -1,5 +1,6 @@
 **/node_modules/
 **/dist/
 !custom_components/ha_artnet_led_uiconfig/frontend/dist/
+custom_components/ha_artnet_led_uiconfig/frontend/dist/*.map
 .storage/
 .DS_Store
