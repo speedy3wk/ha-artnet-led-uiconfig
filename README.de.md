@@ -21,8 +21,8 @@ Nach der Installation erscheint ein Sidebar‑Panel **Art-Net LED Config**.
 ## Lovelace‑Karte (optional)
 Du kannst die UI auch als Lovelace‑Karte nutzen. Resource hinzufügen:
 
-- URL: `/api/ha_artnet_led_uiconfig/ha-artnet-led-uiconfig.js`
-- Typ: JavaScript‑Modul
+1. Einstellungen → Dashboards → ⋮ → Ressourcen
+2. URL hinzufüen: `/api/ha_artnet_led_uiconfig/ha-artnet-led-uiconfig.js` Typ: JavaScript‑Modul.
 
 Karten‑Konfiguration:
 

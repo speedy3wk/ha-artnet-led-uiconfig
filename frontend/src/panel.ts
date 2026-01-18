@@ -16,11 +16,8 @@ const safeDefine = (tag: string, ctor: CustomElementConstructor) => {
   }
   try {
     customElements.define(tag, ctor);
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("already been used")) {
-      return;
-    }
-    throw error;
+  } catch {
+    return;
   }
 };
 
