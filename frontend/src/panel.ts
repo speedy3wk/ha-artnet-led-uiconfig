@@ -273,4 +273,6 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
   `;
 }
 
-customElements.define("ha-artnet-led-uiconfig-panel", HaArtnetLedUiConfigPanel);
+if (!customElements.get("ha-artnet-led-uiconfig-panel")) {
+  customElements.define("ha-artnet-led-uiconfig-panel", HaArtnetLedUiConfigPanel);
+}
