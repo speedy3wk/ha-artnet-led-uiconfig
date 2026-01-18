@@ -1,6 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { property, state } from "lit/decorators.js";
 import { ArtnetLedCardConfig, EMPTY_CONFIG } from "./types";
+import { PANEL_TEXT } from "./i18n";
 import { toArtnetYaml } from "./yaml";
 import "./editor";
 
@@ -9,66 +10,6 @@ const WS_SAVE = "ha_artnet_led_uiconfig/save";
 const WS_DEPLOY = "ha_artnet_led_uiconfig/deploy";
 const PANEL_VERSION = "0.1.0";
 
-const PANEL_TEXT = {
-  de: {
-    ready: "Bereit",
-    loading: "Lade...",
-    loaded: "Geladen",
-    loadError: "Fehler beim Laden",
-    saving: "Speichere...",
-    saved: "Gespeichert",
-    saveError: "Fehler beim Speichern",
-    deployRunning: "Deploy läuft...",
-    deployFailed: "Deploy fehlgeschlagen",
-    deployWithError: "Deploy mit Fehler",
-    deployOk: "Deploy OK",
-    reloadFailed: "Reload fehlgeschlagen",
-    reloadLabel: "Reload",
-    haUrlLabel: "HA URL",
-    tokenLabel: "Token",
-    tokenPresent: "Token present",
-    tokenLength: "Token length",
-    statusLabel: "Status",
-    urlLabel: "URL",
-    title: "Art-Net LED UI Config",
-    reloadButton: "Neu laden",
-    showYaml: "YAML anzeigen",
-    hideYaml: "YAML ausblenden",
-    deploy: "Deploy",
-    deployEllipsis: "Deploy...",
-    save: "Speichern",
-    saveEllipsis: "Speichern..."
-  },
-  en: {
-    ready: "Ready",
-    loading: "Loading...",
-    loaded: "Loaded",
-    loadError: "Failed to load",
-    saving: "Saving...",
-    saved: "Saved",
-    saveError: "Failed to save",
-    deployRunning: "Deploy running...",
-    deployFailed: "Deploy failed",
-    deployWithError: "Deploy with errors",
-    deployOk: "Deploy OK",
-    reloadFailed: "Reload failed",
-    reloadLabel: "Reload",
-    haUrlLabel: "HA URL",
-    tokenLabel: "Token",
-    tokenPresent: "Token present",
-    tokenLength: "Token length",
-    statusLabel: "Status",
-    urlLabel: "URL",
-    title: "Art-Net LED UI Config",
-    reloadButton: "Reload",
-    showYaml: "Show YAML",
-    hideYaml: "Hide YAML",
-    deploy: "Deploy",
-    deployEllipsis: "Deploy...",
-    save: "Save",
-    saveEllipsis: "Saving..."
-  }
-} as const;
 
 export class HaArtnetLedUiConfigPanel extends LitElement {
   @property({ attribute: false }) public hass?: any;
