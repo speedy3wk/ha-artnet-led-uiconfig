@@ -849,5 +849,5 @@ function ge(e){return null==e}var ve={isNothing:ge,isObject:function(e){return"o
     ha-artnet-led-uiconfig-panel {
       display: block;
     }
-  `,e([pe({attribute:!1})],Zt.prototype,"hass",void 0),e([pe({attribute:!1})],Zt.prototype,"config",void 0),customElements.define("ha-artnet-led-uiconfig-card",Zt),customElements.define("ha-artnet-led-uiconfig",Zt),window.customCards=window.customCards||[],window.customCards.push({type:"ha-artnet-led-uiconfig",name:"Art-Net LED UI Config",description:"WYSIWYG editor for ha-artnet-led inside a Lovelace card."});
+  `,e([pe({attribute:!1})],Zt.prototype,"hass",void 0),e([pe({attribute:!1})],Zt.prototype,"config",void 0),customElements.get("ha-artnet-led-uiconfig")||customElements.define("ha-artnet-led-uiconfig",Zt),window.customCards=window.customCards||[],window.customCards.push({type:"ha-artnet-led-uiconfig",name:"Art-Net LED UI Config",description:"WYSIWYG editor for ha-artnet-led inside a Lovelace card."});
 //# sourceMappingURL=ha-artnet-led-uiconfig.js.map

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import os
+import logging
 from typing import Any
 
 from aiohttp import web
@@ -31,6 +32,8 @@ from .const import (
     WS_GET,
     WS_SAVE,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _get_store(hass: HomeAssistant) -> Store:
@@ -171,11 +174,17 @@ async def _async_register_panel(hass: HomeAssistant) -> None:
     if hass.data.get(DOMAIN, {}).get("panel_registered"):
         return
     frontend_path = Path(__file__).parent / "frontend" / "dist"
+    bundle_path = frontend_path / "ha-artnet-led-uiconfig.js"
+    if not bundle_path.exists():
+        _LOGGER.warning("Frontend bundle not found at %s", bundle_path)
+    else:
+        _LOGGER.debug("Frontend bundle found at %s", bundle_path)
     await hass.http.async_register_static_paths(
         [
             StaticPathConfig(STATIC_PATH, str(frontend_path), cache_headers=True),
         ]
     )
+    _LOGGER.debug("Registered static path %s -> %s", STATIC_PATH, frontend_path)
 
     await panel_custom.async_register_panel(
         hass,
