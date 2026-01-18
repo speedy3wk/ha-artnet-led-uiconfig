@@ -18,6 +18,18 @@ Deutsch: see [README.de.md](README.de.md).
 ## Panel
 After installation a sidebar panel **Art-Net LED Config** appears.
 
+## Lovelace card (optional)
+You can also use it as a Lovelace card. Add the resource:
+
+- URL: `/api/ha_artnet_led_uiconfig/ha-artnet-led-uiconfig.js`
+- Type: JavaScript module
+
+Card config:
+
+```yaml
+type: ha-artnet-led-uiconfig
+```
+
 ## Automatic YAML write (Add-on, optional)
 This repository includes an add-on under addons/ha_artnet_led_uiconfig. The add-on writes YAML to /config and triggers a reload.
 
