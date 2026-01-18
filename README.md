@@ -4,6 +4,11 @@ Custom integration (not listed in official HACS) for a WYSIWYG configuration of 
 
 Deutsch: see [README.de.md](README.de.md).
 
+## Screenshots
+[![Screenshot 1](screen1.png)](screen1.png)
+[![Screenshot 2](screen2.png)](screen2.png)
+[![Screenshot 3](screen3.png)](screen3.png)
+
 ## Installation (HACS Custom Repository)
 1. Open HACS → Integrations → ⋮ → Custom repositories.
 2. Add repository URL: https://github.com/speedy3wk/ha-artnet-led-uiconfig (Category: Integration).

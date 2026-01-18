@@ -4,6 +4,11 @@ Custom Integration (nicht offiziell in HACS gelistet) für eine WYSIWYG‑Konfig
 
 English: see [README.md](README.md).
 
+## Screenshots
+[![Screenshot 1](screen1.png)](screen1.png)
+[![Screenshot 2](screen2.png)](screen2.png)
+[![Screenshot 3](screen3.png)](screen3.png)
+
 ## Installation (HACS Custom Repository)
 1. HACS öffnen → Integrationen → ⋮ → Custom repositories.
 2. Repository‑URL hinzufügen: https://github.com/speedy3wk/ha-artnet-led-uiconfig (Kategorie: Integration).
