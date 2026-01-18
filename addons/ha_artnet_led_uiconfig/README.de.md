@@ -1,6 +1,6 @@
 # Art-Net LED UI Config Add-on
 
-Dieses Add-on schreibt die YAML‑Konfiguration aus dem UI‑Panel in eine Include‑Datei und triggert optional einen Reload.
+Dieses Add-on schreibt die YAML‑Konfiguration aus dem UI‑Panel in eine Include‑Datei und triggert optional einen Reload für https://github.com/Breina/ha-artnet-led.
 
 English: see [README.md](README.md).
 

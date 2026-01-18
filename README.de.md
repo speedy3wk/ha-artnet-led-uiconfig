@@ -1,6 +1,6 @@
 # Art-Net LED UI Config
 
-Custom Integration (nicht offiziell in HACS gelistet) für eine WYSIWYG‑Konfiguration der ha-artnet-led Einstellungen. Die Integration stellt ein Sidebar‑Panel bereit und speichert die Konfiguration in Home Assistant Storage.
+Custom Integration (nicht offiziell in HACS gelistet) für eine WYSIWYG‑Konfiguration der https://github.com/Breina/ha-artnet-led Einstellungen. Die Integration stellt ein Sidebar‑Panel bereit und speichert die Konfiguration in Home Assistant Storage.
 
 English: see [README.md](README.md).
 
