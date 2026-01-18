@@ -12,6 +12,20 @@ import {
 import { EDITOR_TEXT } from "./i18n";
 import { fromArtnetYaml, toArtnetYaml } from "./yaml";
 
+const safeDefine = (tag: string, ctor: CustomElementConstructor) => {
+  if (customElements.get(tag)) {
+    return;
+  }
+  try {
+    customElements.define(tag, ctor);
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("already been used")) {
+      return;
+    }
+    throw error;
+  }
+};
+
 interface DragState {
   nodeIndex: number;
   universeIndex: number;
@@ -1200,6 +1214,4 @@ export class ArtnetLedConfigCardEditor extends LitElement {
   `;
 }
 
-if (!customElements.get("artnet-led-config-card-editor")) {
-  customElements.define("artnet-led-config-card-editor", ArtnetLedConfigCardEditor);
-}
+safeDefine("artnet-led-config-card-editor", ArtnetLedConfigCardEditor);

@@ -2,6 +2,20 @@ import { LitElement, css, html } from "lit";
 import { property } from "lit/decorators.js";
 import "./panel";
 
+const safeDefine = (tag: string, ctor: CustomElementConstructor) => {
+  if (customElements.get(tag)) {
+    return;
+  }
+  try {
+    customElements.define(tag, ctor);
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("already been used")) {
+      return;
+    }
+    throw error;
+  }
+};
+
 export class HaArtnetLedUiConfigCard extends LitElement {
   @property({ attribute: false }) public hass?: any;
   @property({ attribute: false }) public config?: Record<string, unknown>;
@@ -37,9 +51,7 @@ export class HaArtnetLedUiConfigCard extends LitElement {
   `;
 }
 
-if (!customElements.get("ha-artnet-led-uiconfig")) {
-  customElements.define("ha-artnet-led-uiconfig", HaArtnetLedUiConfigCard);
-}
+safeDefine("ha-artnet-led-uiconfig", HaArtnetLedUiConfigCard);
 
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({

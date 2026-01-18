@@ -10,6 +10,20 @@ const WS_SAVE = "ha_artnet_led_uiconfig/save";
 const WS_DEPLOY = "ha_artnet_led_uiconfig/deploy";
 const PANEL_VERSION = "0.1.0";
 
+const safeDefine = (tag: string, ctor: CustomElementConstructor) => {
+  if (customElements.get(tag)) {
+    return;
+  }
+  try {
+    customElements.define(tag, ctor);
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("already been used")) {
+      return;
+    }
+    throw error;
+  }
+};
+
 
 export class HaArtnetLedUiConfigPanel extends LitElement {
   @property({ attribute: false }) public hass?: any;
@@ -273,6 +287,4 @@ export class HaArtnetLedUiConfigPanel extends LitElement {
   `;
 }
 
-if (!customElements.get("ha-artnet-led-uiconfig-panel")) {
-  customElements.define("ha-artnet-led-uiconfig-panel", HaArtnetLedUiConfigPanel);
-}
+safeDefine("ha-artnet-led-uiconfig-panel", HaArtnetLedUiConfigPanel);
