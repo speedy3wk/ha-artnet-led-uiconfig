@@ -38,6 +38,7 @@ export class HaArtnetLedUiConfigCard extends LitElement {
 }
 
 customElements.define("ha-artnet-led-uiconfig-card", HaArtnetLedUiConfigCard);
+customElements.define("ha-artnet-led-uiconfig", HaArtnetLedUiConfigCard);
 
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
