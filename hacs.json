@@ -1,6 +1,6 @@
 {
   "name": "Art-Net LED UI Config",
-  "content_in_root": true,
+  "content_in_root": false,
   "render_readme": true,
   "country": ["DE"],
   "homeassistant": "2026.1.0"
