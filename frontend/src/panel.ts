@@ -8,7 +8,7 @@ import "./editor";
 const WS_GET = "ha_artnet_led_uiconfig/get";
 const WS_SAVE = "ha_artnet_led_uiconfig/save";
 const WS_DEPLOY = "ha_artnet_led_uiconfig/deploy";
-const PANEL_VERSION = "0.1.0";
+const PANEL_VERSION = "0.1.4";
 
 const safeDefine = (tag: string, ctor: CustomElementConstructor) => {
   if (customElements.get(tag)) {

@@ -735,7 +735,7 @@ function ge(e){return null==e}var ve={isNothing:ge,isObject:function(e){return"o
           <div>
             <div class="title">${this._t("title")}</div>
             <div class="subtitle">${this._status}</div>
-            <div class="version">${"0.1.0"}</div>
+            <div class="version">${"0.1.4"}</div>
             ${this._deployDetail?B`<div class="detail">${this._deployDetail}</div>`:null}
           </div>
           <div class="actions">

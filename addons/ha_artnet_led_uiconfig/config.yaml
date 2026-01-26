@@ -1,7 +1,7 @@
 name: "Art-Net LED UI Config"
 slug: "ha_artnet_led_uiconfig"
 description: "Write ha-artnet-led YAML from the UI Config panel"
-version: "0.1.0"
+version: "0.1.4"
 url: "https://github.com/speedy3wk/ha-artnet-led-uiconfig"
 arch:
   - aarch64
